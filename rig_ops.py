@@ -94,7 +94,7 @@ well_profile.update({"next_service": "2026-05-01"})
 print(well_profile)
 del well_profile ["temp"]
 print(well_profile)
-if x in = well_profile.keys():
+if x in well_profile.keys():
     if x in "status":
         print(True)
 print(list(well_profile.keys()))
