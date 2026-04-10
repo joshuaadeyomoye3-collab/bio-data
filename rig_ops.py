@@ -51,7 +51,6 @@ for well in wells:
     if well['name'] == 'Bonga-07':
         wells.remove(well)
         print('Bonga-07 removed.')
-        break
 
 print(f'Updated list length: {len(wells)}')
 #task2
