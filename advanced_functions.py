@@ -1,5 +1,4 @@
 import time
-from unittest import result
 
 
 def well_report(well_name, pressure, status="active", location="offshore"):
@@ -19,8 +18,9 @@ well_report(pressure=820, well_name='Bonga-03', location='Deep Water')
 
 #task2
 def log_pressures(*readings):
+    i = 0
     for reading in readings:
-        print("Reading:", reading,"psi")
+        print(f"Reading {i}: {reading} psi")
     print("Highest Reading:", max(readings))
 
 log_pressures(3850,820,2100)
@@ -73,10 +73,7 @@ def pressure_tracker():
     update_max(4800)
     update_max(1500)
     print(f'Peak pressure recorded: {current_max} psi')
-
-
 pressure_tracker()
-
 
 #task4
 def log_call(func):
@@ -114,7 +111,8 @@ run_pressure_scan()
 #task5
 psi_to_bar = lambda psi: psi * 0.0689476
 print("3850 psi in bar:", psi_to_bar(3850))
-
+# def psi_to_bar(psi):
+#     return psi * 0.0689476
 format_well = lambda name, status: name + "-" + status
 print(format_well("Bonga-01", "ACTIVE"))
 
@@ -183,7 +181,7 @@ print(find_deepest(wells))
 
 #7a
 for i in range(1, 11):
-    print("Well-" + str(i).zfill(2))
+    print(f"Well- + 0{i}")
 
 for i in range(2, 11, 2):
     print("Well-" + str(i).zfill(2))
@@ -223,6 +221,64 @@ print(next(gen))
 print(next(gen))
 print(next(gen))
 print(next(gen))
+
+#8
+ALERT_THRESHOLD = 4000
+
+def audit_log(func):
+    def wrapper(*args, **kwargs):
+        print("audit:", func.__name__, "called")
+        return func(*args, **kwargs)
+    return wrapper
+@audit_log
+def classify_well(*readings, **metadata):
+    average = sum(readings) / len(readings)
+    well_name = metadata.get("well_name", "unknown")
+    return average, well_name
+
+is_critical = lambda p: p < 1000
+
+def live_feed(wells):
+    for well in wells:
+        yield well
+
+
+def count_active(wells):
+    if wells == []:
+        return 0
+    if wells[0]["active"] == True:
+        return 1 + count_active(wells[1:])
+    else:
+        return count_active(wells[1:])
+
+
+all_wells = [
+    {"name": "Bonga-01",  "pressure": 3850, "active": True},
+    {"name": "Bonga-03",  "pressure": 820,  "active": True},
+    {"name": "Erha-02",   "pressure": 4600, "active": True},
+    {"name": "Erha-05",   "pressure": 3200, "active": False},
+    {"name": "Agbami-02", "pressure": 650,  "active": True},
+]
+
+for cycle in range(1, 4):
+    print("CYCLE", cycle)
+
+    for well in live_feed(all_wells):
+        average, name = classify_well(well["pressure"], well_name=well["name"])
+
+        if is_critical(well["pressure"]):
+            status = "CRITICAL"
+        elif well["pressure"] > ALERT_THRESHOLD:
+            status = "ALERT"
+        else:
+            status = "NORMAL"
+
+        print(name, "|", well["pressure"], "psi |", status)
+
+    print("Active wells:", count_active(all_wells))
+    print()
+
+print("All cycles complete.")
 
 
 
