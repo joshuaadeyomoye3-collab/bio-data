@@ -391,50 +391,45 @@ print(f"The total number of wells is {Well.get_well_count()}")
 
 #task 8 polymorphism
 
-# lst1 = Well("Agbami-05", 4700, 200)
-#
-# mix2= [
-#     OffshoreWell("Bonga-03", 3200, 190, 800, "FPSO"),
-#     OffshoreWell("Erha-05", 500, 165, 2000, "Fixed Jacket"),
-#     OnshoreWell("Delta-03", 2800, 175, "Niger Delta", "Emeka Eze"),
-#     OnshoreWell("Basin-04", 900, 310, "Benin Basin", "Fatima Bello"),
-#     # lst1
-# ]
-#
-# def run_inspection(wells):
-#     print("=" * 50)
-#     print("   DAILY RIG INSPECTION REPORT")
-#     print("=" * 50)
-#     for well in wells:
-#         well.describe()
-#         if well.is_critical():
-#             print(f"  WARNING: {well.name} is in critical condition!")
-#         if isinstance(well, OffshoreWell):
-#             print(f"  Depth rating: {well.depth_rating()}")
-#         print()
-#
-# run_inspection(mix2)
-#
-#
-# class SubseaWell(OffshoreWell):
-#     def __init__(self, name, pressure, temp, water_depth, platform_type, umbilical_length):
-#         super().__init__(name, pressure, temp, water_depth, platform_type)
-#         self.umbilical_length = umbilical_length
-#
-#     def describe(self):
-#         print("Subsea Well:", self.name, "| Pressure:", self.pressure, "| Depth:", self.water_depth, "m | Umbilical:", self.umbilical_length, "m | Status:", self.status)
-#
-#
-# sub = SubseaWell("Subsea-01", 3500, 185, 1600, "FPSO", 2500)
-# mix2.append(sub)
-#
-#
-# # Why didn't we need to change run_inspection() to support SubseaWell
-# # Because run_inspection() just calls well.describe() on whatever it gets
-# # SubseaWell has its own describe() so Python automatically calls the right one
-# # This is polymorphism one function works on ALL types of wells
-# # present and future without everchanging the function itself
-#
+lst1 = Well("Agbami-05", 4700, 200)
+
+mxd = off + onn
+def run_inspection(wells):
+    print("=" * 50)
+    print("   DAILY RIG INSPECTION REPORT")
+    print("=" * 50)
+    for well in wells:
+        well.describe()
+        if well.is_critical():
+            print(f"  WARNING: {well.name} is in critical condition!")
+        if isinstance(well, OffshoreWell):
+            print(f"  Depth rating: {well.depth_rating()}")
+        print()
+
+run_inspection(mxd)
+
+
+class SubseaWell(OffshoreWell):
+    def __init__(self, name, pressure, temp, water_depth, platform_type, umbilical_length):
+        super().__init__(name, pressure, temp, water_depth, platform_type)
+        self.umbilical_length = umbilical_length
+
+    def describe(self):
+        print("Subsea Well:", self.name, "| Pressure:", self.pressure, "| Depth:", self.water_depth, "m | Umbilical:", self.umbilical_length)
+
+
+sub = SubseaWell("Subsea-01", 3500, 185, 1600, "FPSO", 2500)
+mxd.append(sub)
+run_inspection(mxd)
+
+
+
+# Why didn't we need to change run_inspection() to support SubseaWell
+# Because run_inspection() just calls well.describe() on whatever it gets
+# SubseaWell has its own describe() so Python automatically calls the right one
+# This is polymorphism one function works on ALL types of wells
+# present and future without everchanging the function itself
+
 #
 # #task9
 # task9_wells = [
