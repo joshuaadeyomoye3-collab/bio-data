@@ -1,6 +1,5 @@
 import time
 
-
 def well_report(well_name, pressure, status="active", location="offshore"):
     print("Well:", well_name, "Pressure:", pressure, "Status:", status, "Location:", location)
 
@@ -279,6 +278,5 @@ for cycle in range(1, 4):
     print()
 
 print("All cycles complete.")
-
 
 
